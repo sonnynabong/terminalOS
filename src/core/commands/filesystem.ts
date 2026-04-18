@@ -180,6 +180,82 @@ export function registerFilesystemCommands() {
         parentNode.children = [...(parentNode.children || []), newFile];
         $fsRoot.set([...$fsRoot.get()]);
       }
+    },
+    {
+      name: 'rm',
+      description: 'Remove files or directories',
+      usage: 'rm <path>',
+      execute: ({ parsed, output }) => {
+        if (!parsed.args.length) {
+          output({ text: `rm: missing operand`, className: 'error' });
+          return;
+        }
+        const target = parsed.args[0];
+        const absPath = resolvePath($cwd.get(), target);
+        
+        if (absPath === '/') {
+          output({ text: `rm: it is dangerous to operate recursively on '/'`, className: 'error' });
+          return;
+        }
+
+        const parts = absPath.split('/');
+        const targetName = parts.pop()!;
+        const parentPath = parts.join('/') || '/';
+        const parentNode = getNodeAtPath($fsRoot.get(), parentPath);
+
+        if (!parentNode || parentNode.type !== 'directory') {
+          output({ text: `rm: cannot remove '${target}': No such file or directory`, className: 'error' });
+          return;
+        }
+
+        const idx = (parentNode.children || []).findIndex(c => c.name === targetName);
+        if (idx === -1) {
+          output({ text: `rm: cannot remove '${target}': No such file or directory`, className: 'error' });
+          return;
+        }
+
+        parentNode.children?.splice(idx, 1);
+        $fsRoot.set([...$fsRoot.get()]);
+      }
+    },
+    {
+      name: 'tree',
+      description: 'List contents of directories in a tree-like format',
+      usage: 'tree [dir]',
+      execute: ({ parsed, output }) => {
+        const target = parsed.args[0] || '.';
+        const absPath = resolvePath($cwd.get(), target);
+        const startNode = getNodeAtPath($fsRoot.get(), absPath);
+
+        if (!startNode || startNode.type !== 'directory') {
+           output({ text: `tree: ${target}: No such directory`, className: 'error' });
+           return;
+        }
+
+        let dirCount = 0;
+        let fileCount = 0;
+
+        const printTree = (node: FSNode, prefix: string = '') => {
+          const children = node.children || [];
+          children.forEach((child, index) => {
+            const isLast = index === children.length - 1;
+            const pointer = isLast ? '└── ' : '├── ';
+            
+            if (child.type === 'directory') {
+              dirCount++;
+              output({ text: `${prefix}${pointer}<span style="color: #00D4FF">${child.name}</span>`, isHTML: true });
+              printTree(child, prefix + (isLast ? '    ' : '│   '));
+            } else {
+              fileCount++;
+              output({ text: `${prefix}${pointer}${child.name}` });
+            }
+          });
+        };
+
+        output({ text: `<span style="color: #00D4FF">${startNode.name === '/' ? '.' : startNode.name}</span>`, isHTML: true });
+        printTree(startNode);
+        output({ text: `\n${dirCount} directories, ${fileCount} files` });
+      }
     }
   ]);
 }
