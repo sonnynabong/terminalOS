@@ -1,5 +1,6 @@
 import { atom, onSet } from 'nanostores';
 import { get, set } from 'idb-keyval';
+import { toggleCrtHum } from '../core/audio';
 
 export type ThemeName = 'green' | 'amber' | 'blue' | 'white';
 
@@ -52,4 +53,7 @@ onSet($fontSize, ({ newValue }) => {
 });
 
 onSet($crtEffects, () => saveSettings());
-onSet($soundEnabled, () => saveSettings());
+onSet($soundEnabled, ({ newValue }) => {
+  saveSettings();
+  toggleCrtHum(newValue && $crtEffects.get());
+});

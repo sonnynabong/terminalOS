@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { playBootChime } from '../core/audio';
 
 const BOOT_LINES = [
   { text: '[  OK  ] Initializing kernel...', delay: 400, type: 'ok' },
@@ -34,6 +35,8 @@ export default function BootSequence({ onComplete }: BootSequenceProps) {
   const [visibleLines, setVisibleLines] = useState<number[]>([]);
   
   useEffect(() => {
+    playBootChime();
+    
     // Reveal logo
     setTimeout(() => setLogoRendered(true), 100);
 

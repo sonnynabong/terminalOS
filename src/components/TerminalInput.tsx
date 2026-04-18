@@ -1,6 +1,7 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { useStore } from '@nanostores/react';
 import { $currentInput, $commandHistory, $historyIndex, addOutputLine } from '../stores/terminalStore';
+import { playKeystroke } from '../core/audio';
 
 interface TerminalInputProps {
   promptStr: string;
@@ -21,6 +22,7 @@ export default function TerminalInput({ promptStr, onSubmit, isActive }: Termina
   }, [isActive]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    playKeystroke();
     $currentInput.set(e.target.value);
     setCursorPos(e.target.selectionStart || 0);
   };
@@ -30,6 +32,7 @@ export default function TerminalInput({ promptStr, onSubmit, isActive }: Termina
     let idx = $historyIndex.get();
 
     if (e.key === 'Enter') {
+      playKeystroke();
       const cmd = $currentInput.get();
       addOutputLine({ text: `${promptStr} ${cmd}` });
       if (cmd.trim()) {
