@@ -1,0 +1,50 @@
+.boot-sequence {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.ascii-logo {
+  color: var(--text-main);
+  white-space: pre;
+  font-family: inherit;
+  margin-bottom: 2rem;
+  line-height: 1.2;
+}
+
+.boot-line {
+  margin-bottom: 0.5rem;
+  opacity: 0;
+}
+
+.boot-line.visible {
+  opacity: 1;
+}
+
+.badge {
+  display: inline-block;
+  min-width: 60px;
+  text-align: center;
+}
+
+.badge.ok {
+  color: #33FF33;
+}
+
+.badge.info {
+  color: #00D4FF;
+}
+
+.badge.warn {
+  color: #FFB000;
+}
+
+.badge.err {
+  color: #FF3333;
+}
+
+/* Typewriter animation support */
+.typewriter-text {
+  display: inline-block;
+}

@@ -1,0 +1,9 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Terminal from '../components/Terminal';
+---
+
+<BaseLayout>
+  <!-- Mount the terminal as a client-side only React island -->
+  <Terminal client:only="react" />
+</BaseLayout>

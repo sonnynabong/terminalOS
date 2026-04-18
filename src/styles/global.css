@@ -1,0 +1,70 @@
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=VT323&display=swap');
+
+:root {
+  /* Default Phosphor Green Theme */
+  --bg-color: #0a0a0a;
+  --text-main: #33FF33;
+  --glow-color: rgba(51, 255, 51, 0.6);
+  --glow-color-dim: rgba(51, 255, 51, 0.3);
+  
+  --font-size: 16px;
+  --line-height: 1.5;
+  --terminal-font: 'JetBrains Mono', monospace;
+  --anim-speed: 1; /* Multiplier for animations */
+}
+
+/* Amber Theme */
+[data-theme="amber"] {
+  --text-main: #FFB000;
+  --glow-color: rgba(255, 176, 0, 0.6);
+  --glow-color-dim: rgba(255, 176, 0, 0.3);
+}
+
+/* Blue Theme */
+[data-theme="blue"] {
+  --text-main: #00D4FF;
+  --glow-color: rgba(0, 212, 255, 0.6);
+  --glow-color-dim: rgba(0, 212, 255, 0.3);
+}
+
+/* White Theme */
+[data-theme="white"] {
+  --text-main: #E0E0E0;
+  --glow-color: rgba(224, 224, 224, 0.4);
+  --glow-color-dim: rgba(224, 224, 224, 0.1);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  background-color: #000; /* Pure black outer background */
+  color: var(--text-main);
+  font-family: var(--terminal-font);
+  font-size: var(--font-size);
+  line-height: var(--line-height);
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  transition: color 0.4s ease, text-shadow 0.4s ease, background-color 0.4s ease;
+}
+
+::selection {
+  background: var(--text-main);
+  color: var(--bg-color);
+  text-shadow: none;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --anim-speed: 0 !important;
+  }
+}
