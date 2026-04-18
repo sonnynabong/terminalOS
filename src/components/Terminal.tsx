@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useStore } from '@nanostores/react';
 import TerminalOutput from './TerminalOutput';
 import TerminalInput from './TerminalInput';
+import BootSequence from './BootSequence';
+import CRTOverlay from './CRTOverlay';
 import { addOutputLine, clearOutput } from '../stores/terminalStore';
 import { $cwd } from '../stores/filesystemStore';
 import { initTerminalOS } from '../core/init';
@@ -12,18 +14,16 @@ export default function Terminal() {
   const cwd = useStore($cwd);
   const [promptStr, setPromptStr] = useState(`user@terminalOS:~#`);
   const [isActive, setIsActive] = useState(true);
-  const [booted, setBooted] = useState(false);
+  const [coreInitialized, setCoreInitialized] = useState(false);
+  const [bootSequenceDone, setBootSequenceDone] = useState(false);
 
   useEffect(() => {
-    // Phase 1 fast boot. Phase 3 will replace this with BootSequence component
     initTerminalOS().then(() => {
-      setBooted(true);
-      addOutputLine({ text: 'Welcome to TerminalOS! Type "help" to start.' });
+      setCoreInitialized(true);
     });
   }, []);
 
   useEffect(() => {
-    // Dynamic prompt based on cwd
     const displayPath = cwd === '/home/user' ? '~' : cwd;
     setPromptStr(`user@terminalOS:${displayPath}$`);
   }, [cwd]);
@@ -50,21 +50,29 @@ export default function Terminal() {
     }
   };
 
-  if (!booted) return null;
+  if (!coreInitialized) return null;
 
   return (
     <div 
       className="terminal-container"
       onClick={() => setIsActive(true)}
     >
-      <div className="terminal-screen" onClick={(e) => e.stopPropagation()}>
-        <TerminalOutput />
-        <TerminalInput 
-          promptStr={promptStr} 
-          onSubmit={handleCommand} 
-          isActive={isActive} 
-        />
-      </div>
+      <CRTOverlay />
+      
+      {!bootSequenceDone ? (
+        <div className="terminal-screen crt-power-on">
+          <BootSequence onComplete={() => setBootSequenceDone(true)} />
+        </div>
+      ) : (
+        <div className="terminal-screen" onClick={(e) => e.stopPropagation()}>
+          <TerminalOutput />
+          <TerminalInput 
+            promptStr={promptStr} 
+            onSubmit={handleCommand} 
+            isActive={isActive} 
+          />
+        </div>
+      )}
     </div>
   );
 }
