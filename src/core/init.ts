@@ -2,6 +2,7 @@ import { registerFilesystemCommands } from './commands/filesystem';
 import { registerSystemCommands } from './commands/system';
 import { registerFunCommands } from './commands/fun';
 import { registerSettingsCommands } from './commands/settings';
+import { registerAppCommands } from './commands/apps';
 import { initFilesystem } from '../stores/filesystemStore';
 import { initSettings } from '../stores/settingsStore';
 
@@ -16,6 +17,7 @@ export async function initTerminalOS() {
   registerSystemCommands();
   registerFunCommands();
   registerSettingsCommands();
+  registerAppCommands();
   
   initialized = true;
 }
