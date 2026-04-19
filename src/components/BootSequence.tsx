@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { playBootChime } from '../core/audio';
 
 const BOOT_LINES = [

@@ -1,5 +1,4 @@
 import { registerCommands } from '../commandRegistry';
-import { $cwd } from '../../stores/filesystemStore'; 
 
 export function registerFunCommands() {
   registerCommands([

@@ -1,4 +1,4 @@
-import { registerCommands, type CommandContext } from '../commandRegistry';
+import { registerCommands } from '../commandRegistry';
 import { $fsRoot, $cwd } from '../../stores/filesystemStore';
 import { resolvePath, getNodeAtPath, type FSNode } from '../filesystem';
 

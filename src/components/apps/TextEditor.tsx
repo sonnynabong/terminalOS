@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { closeApp } from '../../stores/processStore';
 import { $fsRoot, $cwd } from '../../stores/filesystemStore';
-import { resolvePath, getNodeAtPath, type FSNode } from '../../core/filesystem';
+import { resolvePath, getNodeAtPath } from '../../core/filesystem';
 
 interface TextEditorProps {
   args: string[];
@@ -9,7 +9,7 @@ interface TextEditorProps {
 
 export default function TextEditor({ args }: TextEditorProps) {
   const [content, setContent] = useState('');
-  const [filename, setFilename] = useState(args[0] || 'Untitled');
+  const [filename] = useState(args[0] || 'Untitled');
   const [status, setStatus] = useState('New Buffer');
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 

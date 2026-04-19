@@ -80,5 +80,7 @@ export function toggleCrtHum(enable: boolean) {
     humOscillator.start();
   }
 
-  humGain.gain.setTargetAtTime(0.02, audioCtx.currentTime, 0.5);
+  if (humGain && audioCtx) {
+    humGain.gain.setTargetAtTime(0.02, audioCtx.currentTime, 0.5);
+  }
 }

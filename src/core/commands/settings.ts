@@ -1,5 +1,5 @@
 import { registerCommands } from '../commandRegistry';
-import { $theme, $fontSize, $crtEffects, $soundEnabled, type ThemeName } from '../../stores/settingsStore';
+import { $theme, $fontSize, $crtEffects, type ThemeName } from '../../stores/settingsStore';
 
 export function registerSettingsCommands() {
   registerCommands([

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { closeApp } from '../../stores/processStore';
 
 const GRID_SIZE = 20;
